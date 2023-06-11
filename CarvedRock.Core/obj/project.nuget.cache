@@ -1,0 +1,15 @@
+{
+  "version": 2,
+  "dgSpecHash": "wvX1czqOeFVZoO71wJHdk2SrJCD4+esM8w2KScw5/cE4LmGIrUOkW+4TKDJGHPdYt7c52kWqSUR7mYBdc5TrqQ==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\zeynels\\Desktop\\Git Project\\DotNET 6 Perofmance\\CarvedRock.Core\\CarvedRock.Core.csproj",
+  "expectedPackageFiles": [],
+  "logs": [
+    {
+      "code": "NU1803",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "You are running the 'restore' operation with an 'HTTP' source, 'http://192.168.0.25:8081/repository/nuget-hosted'. Non-HTTPS access will be removed in a future version. Consider migrating to an 'HTTPS' source."
+    }
+  ]
+}

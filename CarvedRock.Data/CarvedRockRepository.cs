@@ -2,6 +2,7 @@
 using CarvedRock.Data.Entities;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
 
 namespace CarvedRock.Data
@@ -10,13 +11,15 @@ namespace CarvedRock.Data
     {
         private readonly LocalContext _ctx;
         private readonly ILogger<CarvedRockRepository> _logger;
+        private readonly IMemoryCache _memoryCache;
         private readonly ILogger _factoryLogger;
 
         public CarvedRockRepository(LocalContext ctx, ILogger<CarvedRockRepository> logger,
-            ILoggerFactory loggerFactory)
+            ILoggerFactory loggerFactory, IMemoryCache memoryCache)
         {
             _ctx = ctx;
             _logger = logger;
+            this._memoryCache = memoryCache;
             _factoryLogger = loggerFactory.CreateLogger("DataAccessLayer");
         }
         public async Task<List<Product>> GetProductsAsync(string category)
@@ -35,8 +38,9 @@ namespace CarvedRock.Data
 
             try
             {
+                Thread.Sleep(6000);
                 return await _ctx.Products.Where(p => p.Category == category || category == "all")
-                    .Include(p => p.Rating).ToListAsync();
+                    .Include(p => p.Rating ).ToListAsync();
             }
             catch (Exception ex)
             {

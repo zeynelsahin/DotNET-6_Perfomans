@@ -19,7 +19,7 @@ namespace CarvedRock.Data
         {
             _ctx = ctx;
             _logger = logger;
-            this._memoryCache = memoryCache;
+            _memoryCache = memoryCache;
             _factoryLogger = loggerFactory.CreateLogger("DataAccessLayer");
         }
         public async Task<List<Product>> GetProductsAsync(string category)
@@ -39,8 +39,14 @@ namespace CarvedRock.Data
             try
             {
                 Thread.Sleep(6000);
-                return await _ctx.Products.Where(p => p.Category == category || category == "all")
-                    .Include(p => p.Rating ).ToListAsync();
+                var cacheKey = $"products_{category}";
+                if (!_memoryCache.TryGetValue(cacheKey, out List<Product> results))
+                {
+                   results = await _ctx.Products.Where(p => p.Category == category || category == "all")
+                    .Include(p => p.Rating).ToListAsync();
+                    _memoryCache.Set(cacheKey, results,TimeSpan.FromMinutes(2));
+                }
+                return results;
             }
             catch (Exception ex)
             {

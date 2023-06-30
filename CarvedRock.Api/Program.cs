@@ -14,7 +14,8 @@ using Serilog.Exceptions;
 var builder = WebApplication.CreateBuilder(args);
 builder.Logging.ClearProviders();
 
-builder.Host.UseSerilog((context, loggerConfig) => {
+builder.Host.UseSerilog((context, loggerConfig) =>
+{
     loggerConfig
     .ReadFrom.Configuration(context.Configuration)
     .Enrich.WithExceptionDetails()
@@ -24,17 +25,18 @@ builder.Host.UseSerilog((context, loggerConfig) => {
     .WriteTo.Debug();
 });
 
-builder.Services.AddProblemDetails(opts => 
+builder.Services.AddProblemDetails(opts =>
 {
     opts.IncludeExceptionDetails = (ctx, ex) => false;
-    
-    opts.OnBeforeWriteDetails = (ctx, dtls) => {
+
+    opts.OnBeforeWriteDetails = (ctx, dtls) =>
+    {
         if (dtls.Status == 500)
         {
             dtls.Detail = "An error occurred in our API. Use the trace id when contacting us.";
         }
-    }; 
-    opts.Rethrow<SqliteException>(); 
+    };
+    opts.Rethrow<SqliteException>();
     opts.MapToStatusCode<Exception>(StatusCodes.Status500InternalServerError);
 });
 
@@ -49,13 +51,16 @@ builder.Services.AddAuthentication("Bearer")
             NameClaimType = "email"
         };
     });
+builder.Services.AddResponseCaching(options =>
+{
+});
 builder.Services.AddMemoryCache(options => { });
 builder.Services.AddStackExchangeRedisCache(options =>
 {
     options.Configuration = builder.Configuration.GetConnectionString("Redis");
     options.InstanceName = "CarvedRock";
 }
-); 
+);
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -88,6 +93,8 @@ if (app.Environment.IsDevelopment())
         options.OAuthUsePkce();
     });
 }
+
+app.UseResponseCaching();
 app.MapFallback(() => Results.Redirect("/swagger"));
 app.UseAuthentication();
 app.UseMiddleware<UserScopeMiddleware>();

@@ -80,6 +80,17 @@ public class ProductLogic : IProductLogic
 
         return productToAdd;
     }
-
-    
+    public async Task<ProductModel> AddNewProductAsync(ProductModel productToAdd, bool invalidateCache)
+    {
+        var product = new Product
+        {
+            Category = productToAdd.Category,
+            Description = productToAdd.Description,
+            ImgUrl = productToAdd.ImgUrl,
+            Name = productToAdd.Name,
+            Price = productToAdd.Price
+        };
+        var addedProduct = await _repo.AddNewProductAsync(product, invalidateCache);
+        return ConvertToProductModel(addedProduct);
+    }
 }

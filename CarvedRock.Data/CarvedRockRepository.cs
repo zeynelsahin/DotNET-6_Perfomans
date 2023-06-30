@@ -1,7 +1,10 @@
 ﻿using System.Diagnostics;
+using System.Text;
+using System.Text.Json;
 using CarvedRock.Data.Entities;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
 
@@ -12,14 +15,16 @@ namespace CarvedRock.Data
         private readonly LocalContext _ctx;
         private readonly ILogger<CarvedRockRepository> _logger;
         private readonly IMemoryCache _memoryCache;
+        private readonly IDistributedCache _distributedCache;
         private readonly ILogger _factoryLogger;
 
         public CarvedRockRepository(LocalContext ctx, ILogger<CarvedRockRepository> logger,
-            ILoggerFactory loggerFactory, IMemoryCache memoryCache)
+            ILoggerFactory loggerFactory, IMemoryCache memoryCache, IDistributedCache distributedCache)
         {
             _ctx = ctx;
             _logger = logger;
             _memoryCache = memoryCache;
+            _distributedCache = distributedCache;
             _factoryLogger = loggerFactory.CreateLogger("DataAccessLayer");
         }
         public async Task<List<Product>> GetProductsAsync(string category)
@@ -38,18 +43,32 @@ namespace CarvedRock.Data
 
             try
             {
-                Thread.Sleep(6000);
                 var cacheKey = $"products_{category}";
-                if (!_memoryCache.TryGetValue(cacheKey, out List<Product> results))
+                //if (!_memoryCache.TryGetValue(cacheKey, out List<Product> results))
+                //{
+                //    Thread.Sleep(6000);
+                //    results = await _ctx.Products.Where(p => p.Category == category || category == "all")
+                //    .Include(p => p.Rating).ToListAsync();
+                //    _memoryCache.Set(cacheKey, results,TimeSpan.FromMinutes(2));
+                //}
+                var distResult = await _distributedCache.GetAsync(cacheKey);
+                if (distResult == null)
                 {
-                   results = await _ctx.Products.Where(p => p.Category == category || category == "all")
-                    .Include(p => p.Rating).ToListAsync();
-                    _memoryCache.Set(cacheKey, results,TimeSpan.FromMinutes(2));
+                    var productToSerialize = await _ctx.Products.Where(p => p.Category == category || category == "all")
+                   .Include(p => p.Rating).ToListAsync();
+                    var serialized = JsonSerializer.Serialize(productToSerialize, CacheSourceGenerationContext.Default.ListProduct);
+                    await _distributedCache.SetAsync(cacheKey, Encoding.UTF8.GetBytes(serialized), new DistributedCacheEntryOptions()
+                    {
+                        AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(60)
+                    }); ;
+                    return productToSerialize;
                 }
-                return results;
+                var results = JsonSerializer.Deserialize(Encoding.UTF8.GetString(distResult), CacheSourceGenerationContext.Default.ListProduct);
+                return results ?? new List<Product>();
             }
             catch (Exception ex)
             {
+                Thread.Sleep(6000);
                 var newEx = new ApplicationException("Something bad happened in database", ex);
                 newEx.Data.Add("Category", category);
                 throw newEx;
@@ -80,6 +99,18 @@ namespace CarvedRock.Data
             _factoryLogger.LogInformation("(F) Querying products for {id} finished in {ticks} ticks",
                 id, timer.ElapsedTicks);
 
+            return product;
+        }
+        public async Task<Product> AddNewProductAsync(Product product, bool invalidateCache)
+        {
+            _ctx.Products.Add(product);
+            await _ctx.SaveChangesAsync();
+
+            if (invalidateCache)
+            {
+                var cacheKey = $"products_{product.Category}";
+                await _distributedCache.RemoveAsync(cacheKey);
+            }
             return product;
         }
     }

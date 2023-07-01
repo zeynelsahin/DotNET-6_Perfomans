@@ -4,9 +4,14 @@ namespace CarvedRock.WebApp.Pages
 {
     public class CurrentPromotionModel : PageModel
     {
-        public void OnGet()
+        public string RemoteContent { get; set; }
+        public async Task OnGetAsync()
         {
-            throw new NotImplementedException();
+            RemoteContent = await GetRemoteContentAsync();
+        }
+        public Task<string> GetRemoteContentAsync()
+        {
+            return Task.FromResult("NULL");
         }
     }
 }

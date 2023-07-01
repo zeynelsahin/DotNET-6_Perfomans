@@ -6,10 +6,8 @@ namespace CarvedRock.Data
     {
         Task<List<Product>> GetProductsAsync(string category);
         Task<Product?> GetProductByIdAsync(int id);
-
-        List<Product> GetProducts(string category);
+        Task<List<Product>> GetProductsListAsync(string category);
         Product? GetProductById(int id);
-
         Task<Product> AddNewProductAsync(Product product, bool invalidateCache);
     }
 }

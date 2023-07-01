@@ -10,17 +10,29 @@ public class ProductLogic : IProductLogic
 {
     private readonly ILogger<ProductLogic> _logger;
     private readonly ICarvedRockRepository _repo;
-    public ProductLogic(ILogger<ProductLogic> logger, ICarvedRockRepository repo)
+    private readonly IExtraLogic _extraLogic;
+    public ProductLogic(ILogger<ProductLogic> logger, ICarvedRockRepository repo,IExtraLogic extraLogic)
     {
         _logger = logger;
         _repo = repo;
+        _extraLogic = extraLogic;
     }
-    public async Task<IEnumerable<ProductModel>> GetProductsForCategoryAsync(string category)
+    public async Task<IEnumerable<ProductModel>> GetProductsForCategoryAsync(string category, CancellationToken cancellationToken)
     {               
         _logger.LogInformation("Getting products in logic for {category}", category);
 
         Activity.Current?.AddEvent(new ActivityEvent("Getting products from repository"));
-        var products = await _repo.GetProductsAsync(category);
+
+        var products = await _repo.GetProductsAsync(category, cancellationToken);
+
+        _logger.LogInformation("About to make extra async calls");
+        var invTask = _extraLogic.GetInventoryForProductsAsync(products.Select(p => p.Id).ToList(),cancellationToken);
+        var promotionTask= _extraLogic.GetPromotionForProductsAsync(products.Select(p => p.Id).ToList(),cancellationToken);
+
+        await Task.WhenAll(invTask, promotionTask);
+
+        var inventory = await invTask;
+        var promotion= await promotionTask;
 
         var results = new List<ProductModel>();
         foreach (var product in products)

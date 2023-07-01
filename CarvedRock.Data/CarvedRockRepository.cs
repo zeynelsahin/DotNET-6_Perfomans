@@ -27,7 +27,7 @@ namespace CarvedRock.Data
             _distributedCache = distributedCache;
             _factoryLogger = loggerFactory.CreateLogger("DataAccessLayer");
         }
-        public async Task<List<Product>> GetProductsAsync(string category)
+        public async Task<List<Product>> GetProductsAsync(string category, CancellationToken cancellationToken)
         {
             _logger.LogInformation("Getting products in repository for {category}", category);
             //if (category == "clothing")
@@ -50,16 +50,18 @@ namespace CarvedRock.Data
                 //    .Include(p => p.Rating).ToListAsync();
                 //    _memoryCache.Set(cacheKey, results,TimeSpan.FromMinutes(2));
                 //}
-                var distResult = await _distributedCache.GetAsync(cacheKey);
+                var distResult = await _distributedCache.GetAsync(cacheKey,cancellationToken);
                 if (distResult == null)
                 {
+                    await Task.Delay(6000, cancellationToken);
                     var productToSerialize = await _ctx.Products.Where(p => p.Category == category || category == "all")
-                   .Include(p => p.Rating).ToListAsync();
+                   .Include(p => p.Rating).ToListAsync(cancellationToken);
                     var serialized = JsonSerializer.Serialize(productToSerialize, CacheSourceGenerationContext.Default.ListProduct);
+
                     await _distributedCache.SetAsync(cacheKey, Encoding.UTF8.GetBytes(serialized), new DistributedCacheEntryOptions()
                     {
                         AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(60)
-                    }); ;
+                    },cancellationToken); ;
                     return productToSerialize;
                 }
                 var results = JsonSerializer.Deserialize(Encoding.UTF8.GetString(distResult), CacheSourceGenerationContext.Default.ListProduct);

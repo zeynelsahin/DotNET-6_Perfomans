@@ -4,7 +4,7 @@ namespace CarvedRock.Data
 {
     public interface ICarvedRockRepository
     {
-        Task<List<Product>> GetProductsAsync(string category);
+        Task<List<Product>> GetProductsAsync(string category, CancellationToken cancellationToken);
         Task<Product?> GetProductByIdAsync(int id);
         Task<List<Product>> GetProductsListAsync(string category);
         Product? GetProductById(int id);

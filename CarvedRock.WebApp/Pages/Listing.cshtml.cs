@@ -15,15 +15,13 @@ public partial class ListingModel : PageModel
 {
     private readonly HttpClient _apiClient;
     private readonly ILogger<ListingModel> _logger;
-    private readonly HttpContext? _httpCtx;
 
-    public ListingModel(HttpClient apiClient, ILogger<ListingModel> logger,
-        IHttpContextAccessor httpContextAccessor)
+    public ListingModel(HttpClient apiClient, ILogger<ListingModel> logger
+         )
     {
         _logger = logger;
         _apiClient = apiClient;
         _apiClient.BaseAddress = new Uri("https://localhost:7213");
-        _httpCtx = httpContextAccessor.HttpContext;
     }
 
     public List<ProductModel>? Products { get; set; }
@@ -38,14 +36,11 @@ public partial class ListingModel : PageModel
             throw new Exception("failed");
         }
 
-        if (_httpCtx != null)
-        {
-            var accessToken = await _httpCtx.GetTokenAsync("access_token");
-            _apiClient.DefaultRequestHeaders.Authorization =
-                new AuthenticationHeaderValue("Bearer", accessToken);
-            // for a better way to include and manage access tokens for API calls:
-            // https://identitymodel.readthedocs.io/en/latest/aspnetcore/web.html
-        }
+        var accessToken = await HttpContext.GetTokenAsync("access_token");
+        _apiClient.DefaultRequestHeaders.Authorization =
+            new AuthenticationHeaderValue("Bearer", accessToken);
+        // for a better way to include and manage access tokens for API calls:
+        // https://identitymodel.readthedocs.io/en/latest/aspnetcore/web.html
 
         var response = await _apiClient.GetAsync($"Product?category={cat}");
         if (response.IsSuccessStatusCode)
@@ -56,7 +51,7 @@ public partial class ListingModel : PageModel
             //System.Text.Json
             Products = await response.Content.ReadFromJsonAsync<List<ProductModel>>();
             Products = JsonSerializer.Deserialize<List<ProductModel>>(jsonContent, new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
-            Products = JsonSerializer.Deserialize(jsonContent,SoruceGenerationContext.Default.ListProductModel);
+            Products = JsonSerializer.Deserialize(jsonContent, SoruceGenerationContext.Default.ListProductModel);
             if (Products != null && Products.Any())
             {
                 CategoryName = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(Products.First().Category);

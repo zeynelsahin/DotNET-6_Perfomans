@@ -21,7 +21,7 @@ public partial class ProductController : ControllerBase
     }
 
     [HttpGet]
-    [ResponseCache(Duration = 90, VaryByQueryKeys = new[] { "category" })]
+    [ResponseCache(Duration = 2, VaryByQueryKeys = new[] { "category" })]
     public async Task<IEnumerable<ProductModel>> Get(CancellationToken cancellationToken,string category = "all")
     {
         using (_logger.BeginScope("ScopeCat: {ScopeCat}", category))

@@ -11,11 +11,13 @@ public class ProductLogic : IProductLogic
     private readonly ILogger<ProductLogic> _logger;
     private readonly ICarvedRockRepository _repo;
     private readonly IExtraLogic _extraLogic;
-    public ProductLogic(ILogger<ProductLogic> logger, ICarvedRockRepository repo,IExtraLogic extraLogic)
+    private readonly IApiCaller _apiCaller;
+    public ProductLogic(ILogger<ProductLogic> logger, ICarvedRockRepository repo,IExtraLogic extraLogic,IApiCaller apiCaller)
     {
         _logger = logger;
         _repo = repo;
         _extraLogic = extraLogic;
+        _apiCaller= apiCaller;
     }
     public async Task<IEnumerable<ProductModel>> GetProductsForCategoryAsync(string category, CancellationToken cancellationToken)
     {               
@@ -24,6 +26,8 @@ public class ProductLogic : IProductLogic
         Activity.Current?.AddEvent(new ActivityEvent("Getting products from repository"));
 
         var products = await _repo.GetProductsAsync(category, cancellationToken);
+
+        var apiResults = await _apiCaller.CallExternalApiAsync();
 
         _logger.LogInformation("About to make extra async calls");
         var invTask = _extraLogic.GetInventoryForProductsAsync(products.Select(p => p.Id).ToList(),cancellationToken);

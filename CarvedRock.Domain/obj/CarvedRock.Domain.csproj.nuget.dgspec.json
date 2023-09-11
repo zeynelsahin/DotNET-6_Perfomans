@@ -195,9 +195,25 @@
         "net6.0": {
           "targetAlias": "net6.0",
           "dependencies": {
+            "Duende.AccessTokenManagement": {
+              "target": "Package",
+              "version": "[1.0.0, )"
+            },
+            "Duende.AccessTokenManagement.OpenIdConnect": {
+              "target": "Package",
+              "version": "[1.0.0, )"
+            },
+            "Microsoft.AspNetCore.Authentication": {
+              "target": "Package",
+              "version": "[2.2.0, )"
+            },
+            "Microsoft.AspNetCore.Http": {
+              "target": "Package",
+              "version": "[2.2.2, )"
+            },
             "Microsoft.Extensions.Logging.Abstractions": {
               "target": "Package",
-              "version": "[6.0.0, )"
+              "version": "[6.0.2, )"
             }
           },
           "imports": [

@@ -46,7 +46,13 @@ builder.Services.AddAuthentication(options =>
 //builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddRazorPages();
-builder.Services.AddHttpClient();
+builder.Services.AddHttpClient("backend", client => {
+    client.BaseAddress = new Uri("https://localhost:7213");
+});
+
+builder.Services.AddHttpClient("backend2", client => {
+    client.BaseAddress = new Uri("https://localhost:7213");
+});
 
 var app = builder.Build();
 

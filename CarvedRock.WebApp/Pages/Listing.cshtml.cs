@@ -16,17 +16,16 @@ public partial class ListingModel : PageModel
     private readonly HttpClient _apiClient;
     private readonly ILogger<ListingModel> _logger;
 
-    public ListingModel(HttpClient apiClient, ILogger<ListingModel> logger
+    public ListingModel(IHttpClientFactory factory, ILogger<ListingModel> logger
          )
     {
         _logger = logger;
-        _apiClient = apiClient;
-        _apiClient.BaseAddress = new Uri("https://localhost:7213");
+        _apiClient = factory.CreateClient("backend");
     }
 
     public List<ProductModel>? Products { get; set; }
     public string CategoryName { get; set; } = "";
-
+     
     public async Task OnGetAsync()
     {
         _logger.LogInformation("Making API call to get products...");

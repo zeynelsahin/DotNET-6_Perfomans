@@ -50,6 +50,7 @@ builder.Services.AddAuthentication("Bearer")
         {
             NameClaimType = "email"
         };
+        options.SaveToken = true;
     });
 builder.Services.AddResponseCaching(options =>
 {
@@ -70,7 +71,10 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IProductLogic, ProductLogic>();
 builder.Services.AddScoped<IExtraLogic, ExtraLogic>();
 
-builder.Services.AddScoped<IApiCaller, ApiCaller>();
+builder.Services.AddHttpClient<IApiCaller, ApiCaller>(client =>
+{
+    client.BaseAddress = new Uri("https://demo.duendesoftware.com/api/");
+});
 builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddDbContext<LocalContext>();

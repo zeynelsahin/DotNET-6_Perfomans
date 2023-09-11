@@ -11,34 +11,32 @@ using CarvedRock.Core;
 
 namespace CarvedRock.Domain
 {
-    public class ApiCaller: IApiCaller
+    public class ApiCaller : IApiCaller
     {
+        private readonly HttpClient _httpClient;
         private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public ApiCaller(IHttpContextAccessor httpContextAccessor)
+        public ApiCaller(HttpClient httpClient, IHttpContextAccessor httpContextAccessor)
         {
+            _httpClient = httpClient;
             _httpContextAccessor = httpContextAccessor;
         }
 
 
         public async Task<List<LocalClaim>?> CallExternalApiAsync()
         {
-            using (var httpClient= new HttpClient { BaseAddress= new Uri ("https://demo.duendesoftware.com/api/")})
-            {
-                if (_httpContextAccessor.HttpContext==null)
+                if (_httpContextAccessor.HttpContext == null)
                 {
                     throw new Exception("Can't get access token.");
                 }
+
+
                 var token = await _httpContextAccessor.HttpContext.GetTokenAsync("access_token");
-                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-                var response = await httpClient.GetAsync("test");
+
+               _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                var response = await _httpClient.GetAsync("test");
                 response.EnsureSuccessStatusCode();
                 var claims = await response.Content.ReadFromJsonAsync<List<LocalClaim>>();
                 return claims;
-
-            }
-
-
         }
     }
-}

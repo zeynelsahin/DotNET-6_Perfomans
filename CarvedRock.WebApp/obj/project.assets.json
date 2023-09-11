@@ -15,6 +15,60 @@
           "lib/net6.0/HealthChecks.OpenIdConnectServer.dll": {}
         }
       },
+      "Duende.AccessTokenManagement/1.0.0": {
+        "type": "package",
+        "dependencies": {
+          "IdentityModel": "6.0.0",
+          "Microsoft.Extensions.Caching.Abstractions": "6.0.0",
+          "Microsoft.Extensions.DependencyInjection.Abstractions": "6.0.0",
+          "Microsoft.Extensions.Http": "6.0.0",
+          "Microsoft.Extensions.Logging.Abstractions": "6.0.0",
+          "Microsoft.Extensions.Options": "6.0.0"
+        },
+        "compile": {
+          "lib/net6.0/Duende.AccessTokenManagement.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net6.0/Duende.AccessTokenManagement.dll": {
+            "related": ".xml"
+          }
+        }
+      },
+      "Duende.AccessTokenManagement.OpenIdConnect/1.0.0": {
+        "type": "package",
+        "dependencies": {
+          "Duende.AccessTokenManagement": "1.0.0",
+          "Microsoft.AspNetCore.Authentication.OpenIdConnect": "6.0.0"
+        },
+        "compile": {
+          "lib/net6.0/Duende.AccessTokenManagement.OpenIdConnect.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net6.0/Duende.AccessTokenManagement.OpenIdConnect.dll": {
+            "related": ".xml"
+          }
+        },
+        "frameworkReferences": [
+          "Microsoft.AspNetCore.App"
+        ]
+      },
+      "IdentityModel/6.0.0": {
+        "type": "package",
+        "compile": {
+          "lib/net6.0/IdentityModel.dll": {
+            "related": ".pdb;.xml"
+          }
+        },
+        "runtime": {
+          "lib/net6.0/IdentityModel.dll": {
+            "related": ".pdb;.xml"
+          }
+        }
+      },
       "Microsoft.AspNetCore.Authentication.OpenIdConnect/6.0.1": {
         "type": "package",
         "dependencies": {
@@ -41,6 +95,22 @@
         },
         "runtime": {
           "lib/netcoreapp2.0/_._": {}
+        }
+      },
+      "Microsoft.Extensions.Caching.Abstractions/6.0.0": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.Extensions.Primitives": "6.0.0"
+        },
+        "compile": {
+          "lib/netstandard2.0/Microsoft.Extensions.Caching.Abstractions.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/netstandard2.0/Microsoft.Extensions.Caching.Abstractions.dll": {
+            "related": ".xml"
+          }
         }
       },
       "Microsoft.Extensions.Configuration/2.0.0": {
@@ -1030,6 +1100,61 @@
         "lib/netstandard2.0/HealthChecks.OpenIdConnectServer.dll"
       ]
     },
+    "Duende.AccessTokenManagement/1.0.0": {
+      "sha512": "ct+26YYp8E6wcB5m/YSIbEP/HGLTzQ+GmAjrpHx4/tTlXZQamJnT72Vd/Dx2FWwD2rrqOhCoEw8iWsVOnxBTiw==",
+      "type": "package",
+      "path": "duende.accesstokenmanagement/1.0.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "duende.accesstokenmanagement.1.0.0.nupkg.sha512",
+        "duende.accesstokenmanagement.nuspec",
+        "icon.png",
+        "lib/net6.0/Duende.AccessTokenManagement.dll",
+        "lib/net6.0/Duende.AccessTokenManagement.xml"
+      ]
+    },
+    "Duende.AccessTokenManagement.OpenIdConnect/1.0.0": {
+      "sha512": "nH2pBPPYgxGNaAUW1Sm0C4g21oYKQ6L0NA2vLEW4lQhL4nh5HXsQSwooGRTqB3LM/gY+iepU9eCgNo5Pl4INRg==",
+      "type": "package",
+      "path": "duende.accesstokenmanagement.openidconnect/1.0.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "duende.accesstokenmanagement.openidconnect.1.0.0.nupkg.sha512",
+        "duende.accesstokenmanagement.openidconnect.nuspec",
+        "icon.png",
+        "lib/net6.0/Duende.AccessTokenManagement.OpenIdConnect.dll",
+        "lib/net6.0/Duende.AccessTokenManagement.OpenIdConnect.xml"
+      ]
+    },
+    "IdentityModel/6.0.0": {
+      "sha512": "eVHCR7a6m/dm5RFcBzE3qs/Jg5j9R5Rjpu8aTOv9e4AFvaQtBXb5ah7kmwU+YwA0ufRwz4wf1hnIvsD2hSnI4g==",
+      "type": "package",
+      "path": "identitymodel/6.0.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "icon.jpg",
+        "identitymodel.6.0.0.nupkg.sha512",
+        "identitymodel.nuspec",
+        "lib/net461/IdentityModel.dll",
+        "lib/net461/IdentityModel.pdb",
+        "lib/net461/IdentityModel.xml",
+        "lib/net472/IdentityModel.dll",
+        "lib/net472/IdentityModel.pdb",
+        "lib/net472/IdentityModel.xml",
+        "lib/net5.0/IdentityModel.dll",
+        "lib/net5.0/IdentityModel.pdb",
+        "lib/net5.0/IdentityModel.xml",
+        "lib/net6.0/IdentityModel.dll",
+        "lib/net6.0/IdentityModel.pdb",
+        "lib/net6.0/IdentityModel.xml",
+        "lib/netstandard2.0/IdentityModel.dll",
+        "lib/netstandard2.0/IdentityModel.pdb",
+        "lib/netstandard2.0/IdentityModel.xml"
+      ]
+    },
     "Microsoft.AspNetCore.Authentication.OpenIdConnect/6.0.1": {
       "sha512": "TWAqWqSe4dzp+0Nk5R8y+WRCl13lHU7VqgWsZxryoN57LdRUXByWerZgTrRvXj88qM86UESilL12foyjDfaC+g==",
       "type": "package",
@@ -1111,6 +1236,25 @@
         "ref/xamarinwatchos10/_._",
         "useSharedDesignerContext.txt",
         "version.txt"
+      ]
+    },
+    "Microsoft.Extensions.Caching.Abstractions/6.0.0": {
+      "sha512": "bcz5sSFJbganH0+YrfvIjJDIcKNW7TL07C4d1eTmXy/wOt52iz4LVogJb6pazs7W0+74j0YpXFErvp++Aq5Bsw==",
+      "type": "package",
+      "path": "microsoft.extensions.caching.abstractions/6.0.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "Icon.png",
+        "LICENSE.TXT",
+        "THIRD-PARTY-NOTICES.TXT",
+        "lib/net461/Microsoft.Extensions.Caching.Abstractions.dll",
+        "lib/net461/Microsoft.Extensions.Caching.Abstractions.xml",
+        "lib/netstandard2.0/Microsoft.Extensions.Caching.Abstractions.dll",
+        "lib/netstandard2.0/Microsoft.Extensions.Caching.Abstractions.xml",
+        "microsoft.extensions.caching.abstractions.6.0.0.nupkg.sha512",
+        "microsoft.extensions.caching.abstractions.nuspec",
+        "useSharedDesignerContext.txt"
       ]
     },
     "Microsoft.Extensions.Configuration/2.0.0": {
@@ -3194,6 +3338,7 @@
     "net6.0": [
       "AspNetCore.HealthChecks.OpenIdConnectServer >= 6.0.1",
       "CarvedRock.Core >= 1.0.0",
+      "Duende.AccessTokenManagement.OpenIdConnect >= 1.0.0",
       "Microsoft.AspNetCore.Authentication.OpenIdConnect >= 6.0.1",
       "Newtonsoft.Json >= 13.0.1",
       "Serilog.AspNetCore >= 4.1.0",
@@ -3256,6 +3401,10 @@
           "AspNetCore.HealthChecks.OpenIdConnectServer": {
             "target": "Package",
             "version": "[6.0.1, )"
+          },
+          "Duende.AccessTokenManagement.OpenIdConnect": {
+            "target": "Package",
+            "version": "[1.0.0, )"
           },
           "Microsoft.AspNetCore.Authentication.OpenIdConnect": {
             "target": "Package",

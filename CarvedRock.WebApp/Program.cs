@@ -8,7 +8,8 @@ using Serilog.Enrichers.Span;
 var builder = WebApplication.CreateBuilder(args);
 builder.Logging.ClearProviders();
 
-builder.Host.UseSerilog((context, loggerConfig) => { 
+builder.Host.UseSerilog((context, loggerConfig) =>
+{
     loggerConfig
     .ReadFrom.Configuration(context.Configuration)
     .Enrich.WithExceptionDetails()
@@ -22,7 +23,7 @@ JwtSecurityTokenHandler.DefaultMapInboundClaims = false;
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultScheme = "Cookies";
-    options.DefaultChallengeScheme = "oidc";    
+    options.DefaultChallengeScheme = "oidc";
 })
 .AddCookie("Cookies")
 .AddOpenIdConnect("oidc", options =>
@@ -40,17 +41,21 @@ builder.Services.AddAuthentication(options =>
     options.TokenValidationParameters = new TokenValidationParameters
     {
         NameClaimType = "email"
-    };    
+    };
     options.SaveTokens = true;
 });
 //builder.Services.AddHttpContextAccessor();
 
+builder.Services.AddOpenIdConnectAccessTokenManagement();
+
 builder.Services.AddRazorPages();
-builder.Services.AddHttpClient("backend", client => {
+builder.Services.AddUserAccessTokenHttpClient("backend", configureClient: client =>
+{
     client.BaseAddress = new Uri("https://localhost:7213");
 });
 
-builder.Services.AddHttpClient("backend2", client => {
+builder.Services.AddHttpClient("backend2", client =>
+{
     client.BaseAddress = new Uri("https://localhost:7213");
 });
 

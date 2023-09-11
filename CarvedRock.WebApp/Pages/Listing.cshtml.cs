@@ -35,9 +35,9 @@ public partial class ListingModel : PageModel
             throw new Exception("failed");
         }
 
-        var accessToken = await HttpContext.GetTokenAsync("access_token");
-        _apiClient.DefaultRequestHeaders.Authorization =
-            new AuthenticationHeaderValue("Bearer", accessToken);
+        //var accessToken = await HttpContext.GetTokenAsync("access_token");
+        //_apiClient.DefaultRequestHeaders.Authorization =
+        //    new AuthenticationHeaderValue("Bearer", accessToken);
         // for a better way to include and manage access tokens for API calls:
         // https://identitymodel.readthedocs.io/en/latest/aspnetcore/web.html
 

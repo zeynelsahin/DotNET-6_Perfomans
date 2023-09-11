@@ -1,12 +1,16 @@
 {
   "version": 2,
-  "dgSpecHash": "iYQAiF5ryHIJSnBXNBs+w2WDe+VhCPEOv1gXl1Nk688sCnwus/xlfleQjiG1b8bptGxXstVuJqfpSgKR+FcGWw==",
+  "dgSpecHash": "VRmU5hs5KuzU/p3e1Pa2yuTai87TxiF65D6mvfd0cbB1P+NfUuzIWA20SndrxEhyedJbjIc4TGTf0A86dW8Xhw==",
   "success": true,
   "projectFilePath": "C:\\Users\\zeynels\\Desktop\\Git Project\\DotNET 6 Perofmance\\CarvedRock.WebApp\\CarvedRock.WebApp.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\zeynels\\.nuget\\packages\\aspnetcore.healthchecks.openidconnectserver\\6.0.1\\aspnetcore.healthchecks.openidconnectserver.6.0.1.nupkg.sha512",
+    "C:\\Users\\zeynels\\.nuget\\packages\\duende.accesstokenmanagement\\1.0.0\\duende.accesstokenmanagement.1.0.0.nupkg.sha512",
+    "C:\\Users\\zeynels\\.nuget\\packages\\duende.accesstokenmanagement.openidconnect\\1.0.0\\duende.accesstokenmanagement.openidconnect.1.0.0.nupkg.sha512",
+    "C:\\Users\\zeynels\\.nuget\\packages\\identitymodel\\6.0.0\\identitymodel.6.0.0.nupkg.sha512",
     "C:\\Users\\zeynels\\.nuget\\packages\\microsoft.aspnetcore.authentication.openidconnect\\6.0.1\\microsoft.aspnetcore.authentication.openidconnect.6.0.1.nupkg.sha512",
     "C:\\Users\\zeynels\\.nuget\\packages\\microsoft.csharp\\4.5.0\\microsoft.csharp.4.5.0.nupkg.sha512",
+    "C:\\Users\\zeynels\\.nuget\\packages\\microsoft.extensions.caching.abstractions\\6.0.0\\microsoft.extensions.caching.abstractions.6.0.0.nupkg.sha512",
     "C:\\Users\\zeynels\\.nuget\\packages\\microsoft.extensions.configuration\\2.0.0\\microsoft.extensions.configuration.2.0.0.nupkg.sha512",
     "C:\\Users\\zeynels\\.nuget\\packages\\microsoft.extensions.configuration.abstractions\\6.0.0\\microsoft.extensions.configuration.abstractions.6.0.0.nupkg.sha512",
     "C:\\Users\\zeynels\\.nuget\\packages\\microsoft.extensions.configuration.binder\\2.0.0\\microsoft.extensions.configuration.binder.2.0.0.nupkg.sha512",
